@@ -1,0 +1,61 @@
+2019/03/18
+
+Recording locking settings for f_rep and f_0 locks before switching NIST HV amplifier for 15x op-amp non-inverting amplifier.
+
+f_rep:
+FAST LOCK
+28 MHz reference frequency
+3e6 VCO gain
+Kp On
+Kd Off
+Kp: -2.9e1
+fi: 1.91e5
+fii: 2.40e4
+fd: 0e0
+fdf: 0e0
+crossover off
+
+Dither: 1e3 Hz, 1s integration, 5e-3 amplitude
+
+SLOW LOCK
+0 MHz reference frequency
+6.2e9 VCO gain
+Kp On
+Kd off
+kp: -3e0
+fi: 1.26e1
+fii: 0e0
+fd: 0e0
+fdf: 0e0
+crossover off
+
+Dither: 1e0 Hz, 10s integration, 1e-2 amplitude
+
+f_0:
+FAST LOCK
+3.9e7 reference frequency
+5.8e6 VCO gain
+Kp On
+Kd On
+Kp: 1e0
+fi: 1.58e5
+fii: 7.94e4
+fd: 1.51e4
+fdf: 1.897e3
+crossover off
+
+Dither: 1e3 Hz, 1s integration, 1e-2 amplitude
+
+SLOW LOCK
+0 Hz reference frequency
+2.0e7 VCO gain
+Kp On
+Kd Off
+Kp: -3e1
+fi: 1.0e-2
+fii: 0e0
+fd: 0e0
+fdf: 0e0
+crossover off
+
+Dither: 1e0 Hz, 10s integration, 1e-2 amplitude
