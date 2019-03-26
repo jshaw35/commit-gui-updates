@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 import SuperLaserLand_JD_RP
 
+import json
 
 class SLLSystemParameters():
 
@@ -23,7 +24,9 @@ class SLLSystemParameters():
         self.sl = sl
 
         self.populateDefaults()
-#        self.NewTree('hi_jshaw', "") # settings remain empty
+#        self.Writejson('hi_jshaw', "") # settings remain empty
+        self.data = {}
+        self.readfromjson = False
 
         return
 
@@ -58,44 +61,454 @@ class SLLSystemParameters():
         self.root.append(ET.Element('Filter_select', DAC1='0', DAC0='0'))
         self.root.append(ET.Element('Angle_select', DAC1='0', DAC0='0'))
 
-    def NewTree(self, strFilename, settings):
+    def Readjson(self,jsonfile):
+        print('reading %s' % jsonfile)
+        
+        
+        with open(jsonfile) as json_file:  
+            data = json.load(json_file)
+            for p in data['Reference_frequency']:
+                self.data['Reference_frequency'] = []
+                self.data['Reference_frequency'].append({
+                    'DDC0': p['DDC0'], 
+                    'DDC1': p['DDC1']
+                })
+            for p in data['VCO_gain']:
+                self.data['VCO_gain'] = []
+                self.data['VCO_gain'].append({
+                    'DAC0': p['DAC0'],
+                    'DAC1': p['DAC1'],
+                    'DAC2': p['DAC2']
+                })
+            for p in data['Output_limits_low']:
+                self.data['Output_limits_low'] = []
+                self.data['Output_limits_low'].append({
+                    'DAC0': p['DAC0'],
+                    'DAC1': p['DAC1'],
+                    'DAC2': p['DAC2']
+                })
+            for p in data['Output_limits_high']:
+                self.data['Output_limits_high'] = []
+                self.data['Output_limits_high'].append({
+                    'DAC0': p['DAC0'],
+                    'DAC1': p['DAC1'],
+                    'DAC2': p['DAC2']
+                })
+            for p in data['Input_Output_gain']:
+                self.data['Input_Output_gain'] = []
+                self.data['Input_Output_gain'].append({
+                    'ADC0': p['ADC0'], 
+                    'ADC1': p['ADC1'], 
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Output_offset_in_volts']:
+                self.data['Output_offset_in_volts'] = []
+                self.data['Output_offset_in_volts'].append({
+                    'DAC0': p['DAC0'],
+                    'DAC1': p['DAC1'],
+                    'DAC2': p['DAC2']
+                })
+            for p in data['PLL0_settings']:
+                self.data['PLL0_settings'] = []
+                self.data['PLL0_settings'].append({
+                    'kp': p['kp'], 
+                    'fi': p['fi'], 
+                    'fii': p['fii'], 
+                    'fd': p['fd'], 
+                    'fdf': p['fdf'], 
+                    'chkKd': p['chkKd'],
+                    'chkKp': p['chkKp'], 
+                    'chkLock': p['chkLock'], 
+                    'chkKpCrossing': p['chkKpCrossing']
+                })
+            for p in data['PLL1_settings']:
+                self.data['PLL1_settings'] = []
+                self.data['PLL1_settings'].append({
+                    'kp': p['kp'], 
+                    'fi': p['fi'], 
+                    'fii': p['fii'], 
+                    'fd': p['fd'], 
+                    'fdf': p['fdf'], 
+                    'chkKd': p['chkKd'],
+                    'chkKp': p['chkKp'], 
+                    'chkLock': p['chkLock'], 
+                    'chkKpCrossing': p['chkKpCrossing']
+                })
+            for p in data['PLL2_settings']:
+                self.data['PLL2_settings'] = []
+                self.data['PLL2_settings'].append({
+                    'kp': p['kp'], 
+                    'fi': p['fi'], 
+                    'fii': p['fii'], 
+                    'fd': p['fd'], 
+                    'fdf': p['fdf'], 
+                    'chkKd': p['chkKd'],
+                    'chkKp': p['chkKp'], 
+                    'chkLock': p['chkLock'], 
+                    'chkKpCrossing': p['chkKpCrossing']
+                })
+            for p in data['PWM0_settings']:
+                self.data['PWM0_settings'] = []
+                self.data['PWM0_settings'].append({
+                    'standard': p['standard'], 
+                    'levels': p['levels'], 
+                    'default': p['default'], 
+                    'minval': p['minval'], 
+                    'maxval': p['maxval']
+                })
+            for p in data['Main_window_settings']:
+                self.data['Main_window_settings'] = []
+                self.data['Main_window_settings'].append({
+                    'refresh_delay': p['refresh_delay'], 
+                    'N_samples_adc': p['N_samples_adc'], 
+                    'N_samples_ddc': p['N_samples_ddc'], 
+                    'Integration_limit': p['Integration_limit']
+                })
+            for p in data['Triangular_averaging']:
+                self.data['Triangular_averaging'] = []
+                self.data['Triangular_averaging'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Dither_frequency']:
+                self.data['Dither_frequency'] = []
+                self.data['Dither_frequency'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Dither_integration_time']:
+                self.data['Dither_integration_time'] = []
+                self.data['Dither_integration_time'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Dither_amplitude']:
+                self.data['Dither_amplitude'] = []
+                self.data['Dither_amplitude'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Dither_mode']:
+                self.data['Dither_mode'] = []
+                self.data['Dither_mode'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['VCO_settings']:
+                self.data['VCO_settings'] = []
+                self.data['VCO_settings'].append({
+                    'VCO_offset': p['VCO_offset'], 
+                    'VCO_amplitude': p['VCO_amplitude'], 
+                    'VCO_connection': p['VCO_connection']
+                })
+            for p in data['RP_settings']:
+                self.data['RP_settings'] = []
+                self.data['RP_settings'].append({
+                    'Fan_state': p['Fan_state'], 
+                    'PLL1_connection': p['PLL1_connection']
+                })
+            for p in data['Filter_select']:
+                self.data['Filter_select'] = []
+                self.data['Filter_select'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+            for p in data['Angle_select']:
+                self.data['Angle_select'] = []
+                self.data['Angle_select'].append({
+                    'DAC0': p['DAC0'], 
+                    'DAC1': p['DAC1']
+                })
+        print('%s read into self.data' % jsonfile)
+#        self.Printjson(jsonfile)
+    
+    def Printjson(self,jsonfile): # Display for checking things
+        print('printing .json')
+        
+        with open(jsonfile) as json_file:  
+            data = json.load(json_file)
+            for p in data['Reference_frequency']:
+                print('DDC0: ' + p['DDC0'])
+                print('DDC1: ' + p['DDC1'])
+#                print('From: ' + p['from'])
+                print('')
+            for p in data['VCO_gain']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('DAC2: ' + p['DAC2'])
+                print('')
+            for p in data['Output_limits_low']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('DAC2: ' + p['DAC2'])
+                print('')
+            for p in data['Output_limits_high']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('DAC2: ' + p['DAC2'])
+                print('')
+            for p in data['Input_Output_gain']:
+                print('ADC0: ' + p['ADC0'])
+                print('ADC1: ' + p['ADC1'])
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Output_offset_in_volts']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('DAC2: ' + p['DAC2'])
+                print('')
+            for p in data['PLL0_settings']:
+                print('kp: ' + p['kp'])
+                print('fi: ' + p['fi'])
+                print('fii: ' + p['fii'])
+                print('fd: ' + p['fd'])
+                print('fdf: ' + p['fdf'])
+                print('chkKd: ' + p['chkKd'])
+                print('chkKp: ' + p['chkKp'])
+                print('chkLock: ' + p['chkLock'])
+                print('chkKpCrossing: ' + p['chkKpCrossing'])
+                print('')
+            for p in data['PLL1_settings']:
+                print('kp: ' + p['kp'])
+                print('fi: ' + p['fi'])
+                print('fii: ' + p['fii'])
+                print('fd: ' + p['fd'])
+                print('fdf: ' + p['fdf'])
+                print('chkKd: ' + p['chkKd'])
+                print('chkKp: ' + p['chkKp'])
+                print('chkLock: ' + p['chkLock'])
+                print('chkKpCrossing: ' + p['chkKpCrossing'])
+                print('')
+            for p in data['PLL2_settings']:
+                print('kp: ' + p['kp'])
+                print('fi: ' + p['fi'])
+                print('fii: ' + p['fii'])
+                print('fd: ' + p['fd'])
+                print('fdf: ' + p['fdf'])
+                print('chkKd: ' + p['chkKd'])
+                print('chkKp: ' + p['chkKp'])
+                print('chkLock: ' + p['chkLock'])
+                print('chkKpCrossing: ' + p['chkKpCrossing'])
+                print('')
+            for p in data['PWM0_settings']:
+                print('standard: ' + p['standard'])
+                print('levels: ' + p['levels'])
+                print('default: ' + p['default'])
+                print('minval: ' + p['minval'])
+                print('maxval: ' + p['maxval'])
+                print('')
+            for p in data['Main_window_settings']:
+                print('refresh_delay: ' + p['refresh_delay'])
+                print('N_samples_adc: ' + p['N_samples_adc'])
+                print('N_samples_ddc: ' + p['N_samples_ddc'])
+                print('Integration_limit: ' + p['Integration_limit'])
+                print('')
+            for p in data['Triangular_averaging']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Dither_frequency']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Dither_integration_time']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Dither_amplitude']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Dither_mode']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['VCO_settings']:
+                print('VCO_offset: ' + p['VCO_offset'])
+                print('VCO_amplitude: ' + p['VCO_amplitude'])
+                print('VCO_connection: ' + p['VCO_connection'])
+                print('')
+            for p in data['RP_settings']:
+                print('Fan_state: ' + p['Fan_state'])
+                print('PLL1_connection: ' + p['PLL1_connection'])
+                print('')
+            for p in data['Filter_select']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+            for p in data['Angle_select']:
+                print('DAC0: ' + p['DAC0'])
+                print('DAC1: ' + p['DAC1'])
+                print('')
+
+    def Writejson(self, strFilename, settings):
+        # organizing settings 
+        window1_outs = settings['window1_outs']
+        window2_outs = settings['window2_outs']
+        freq_window1_outs = settings['freq_window1_outs']
+        freq_window2_outs = settings['freq_window2_outs']
+        dither1_outs = settings['dither1_outs']
+        dither2_outs = settings['dither2_outs']
+        rp_settings_outs = settings['rp_settings_outs']
+        divider_settings_outs = settings['divider_settings_outs']
+        
+        self.dataoutput = {}  
+        
+        self.dataoutput['Reference_frequency'] = []  
+        self.dataoutput['Reference_frequency'].append({
+            'DDC0': window1_outs['ref_freq'], 
+            'DDC1': window2_outs['ref_freq']
+        })
+
+        self.dataoutput['VCO_gain'] = []
+        self.dataoutput['VCO_gain'].append({
+            'DAC0': window1_outs['vco_gain'],
+            'DAC1': window2_outs['vco_gain'],
+            'DAC2': '9e6'
+        })
+        self.dataoutput['Output_limits_low'] = []
+        self.dataoutput['Output_limits_low'].append({
+            'DAC0': window1_outs['limit_low'],
+            'DAC1': window2_outs['limit_low'],
+            'DAC2': '0'
+        })
+        self.dataoutput['Output_limits_high'] = []
+        self.dataoutput['Output_limits_high'].append({
+            'DAC0': window1_outs['limit_high'],
+            'DAC1': window2_outs['limit_high'],
+            'DAC2': '55'
+        })
+        self.dataoutput['Input_Output_gain'] = []
+        self.dataoutput['Input_Output_gain'].append({
+            'ADC0': '1', 
+            'ADC1': '1', 
+            'DAC0': '1', 
+            'DAC1': '1'
+        })
+        self.dataoutput['Output_offset_in_volts'] = []
+        self.dataoutput['Output_offset_in_volts'].append({
+            'DAC0': window1_outs['dac_offset'],
+            'DAC1': window2_outs['dac_offset'],
+            'DAC2': '27'
+        })
+        self.dataoutput['PLL0_settings'] = []
+        self.dataoutput['PLL0_settings'].append({
+            'kp': window1_outs['kp'], 
+            'fi': window1_outs['fi'], 
+            'fii': window1_outs['fii'], 
+            'fd': window1_outs['fd'], 
+            'fdf': window1_outs['fdf'], 
+            'chkKd': window1_outs['chkKd'],
+            'chkKp': window1_outs['chkKp'], 
+            'chkLock': window1_outs['chkLock'], 
+            'chkKpCrossing': window1_outs['chkKpCrossing']
+        })
+        self.dataoutput['PLL1_settings'] = []
+        self.dataoutput['PLL1_settings'].append({
+            'kp': window2_outs['kp'], 
+            'fi': window2_outs['fi'], 
+            'fii': window2_outs['fii'], 
+            'fd': window2_outs['fd'], 
+            'fdf': window2_outs['fdf'], 
+            'chkKd': window2_outs['chkKd'],
+            'chkKp': window2_outs['chkKp'], 
+            'chkLock': window2_outs['chkLock'], 
+            'chkKpCrossing': window2_outs['chkKpCrossing']
+        })
+        self.dataoutput['PLL2_settings'] = []
+        self.dataoutput['PLL2_settings'].append({
+            'kp': '-5.6',
+            'fi': '141e3', 
+            'fii': '3.24e3', 
+            'fd': '1', 
+            'fdf': '1', 
+            'chkKd': 'False',
+            'chkKp': 'True', 
+            'chkLock': 'False', 
+            'chkKpCrossing': 'True'
+        })
+        self.dataoutput['PWM0_settings'] = []
+        self.dataoutput['PWM0_settings'].append({
+            'standard': '3.3', 
+            'levels': '256', 
+            'default': '0.0', 
+            'minval': '0.0', 
+            'maxval': '3.3'
+        })
+        self.dataoutput['Main_window_settings'] = []
+        self.dataoutput['Main_window_settings'].append({
+            'refresh_delay': '500', 
+            'N_samples_adc': '1.75e3', 
+            'N_samples_ddc': '1e6', 
+            'Integration_limit': '5e6'
+        })
+        self.dataoutput['Triangular_averaging'] = []
+        self.dataoutput['Triangular_averaging'].append({
+            'DAC0': freq_window1_outs, 
+            'DAC1': freq_window2_outs
+        })
+        self.dataoutput['Dither_frequency'] = []
+        self.dataoutput['Dither_frequency'].append({
+            'DAC0': dither1_outs['modulation_freq'],
+            'DAC1': dither2_outs['modulation_freq'] 
+        })
+        self.dataoutput['Dither_integration_time'] = []
+        self.dataoutput['Dither_integration_time'].append({
+            'DAC0': dither1_outs['integration_time_in_seconds'],
+            'DAC1': dither2_outs['integration_time_in_seconds'] 
+        })
+        self.dataoutput['Dither_amplitude'] = []
+        self.dataoutput['Dither_amplitude'].append({
+            'DAC0': dither1_outs['amplitude'],
+            'DAC1': dither2_outs['amplitude'] 
+        })
+        self.dataoutput['Dither_mode'] = []
+        self.dataoutput['Dither_mode'].append({
+            'DAC0': dither1_outs['mode'],
+            'DAC1': dither2_outs['mode'] 
+        })
+        self.dataoutput['VCO_settings'] = []
+        self.dataoutput['VCO_settings'].append({
+            'VCO_offset': rp_settings_outs['VCO_offset'], 
+            'VCO_amplitude': rp_settings_outs['VCO_amplitude'], 
+            'VCO_connection': rp_settings_outs['VCO_connection']
+        })
+        self.dataoutput['RP_settings'] = []
+        self.dataoutput['RP_settings'].append({
+            'Fan_state': rp_settings_outs['Fan_state'], 
+            'PLL1_connection': rp_settings_outs['PLL1_connection']
+        })
+        self.dataoutput['Filter_select'] = []
+        self.dataoutput['Filter_select'].append({
+            'DAC0': divider_settings_outs['filter_select_0'], 
+            'DAC1': divider_settings_outs['filter_select_1']
+        })
+        self.dataoutput['Angle_select'] = []
+        self.dataoutput['Angle_select'].append({
+            'DAC0': divider_settings_outs['angle_select_0'], 
+            'DAC1': divider_settings_outs['angle_select_1']
+        })
+    
+        with open(strFilename, 'w') as outfile:  
+            json.dump(self.dataoutput, outfile)
+        
+#        self.Readjson(strFilename)
+            
 #        strFilename = "new_settings_for_Jonah"
             # Create the tree structure:
-        self.newroot = ET.Element('SuperLaserLandPLL_settings')
-        
-        # Send update values from controller
-        
-        # Organize values from controller
-        
-        # useful stuff
-        self.newroot.append(ET.Element('Reference_frequency', DDC0='35.96e6', DDC1='35.96e6'))
-        self.newroot.append(ET.Element('VCO gain', DAC0='2e8', DAC1='0.5e6', DAC2='9e6'))
-        self.newroot.append(ET.Element('Output_limits_low', DAC0='-1.0', DAC1='-0', DAC2='0'))
-        self.newroot.append(ET.Element('Output_limits_high', DAC0='1.0', DAC1='1', DAC2='55'))
-        self.newroot.append(ET.Element('Input_Output_gain', ADC0='1', ADC1='1', DAC0='1', DAC1='1'))
-        self.newroot.append(ET.Element('Output_offset_in_volts', DAC0='0.0274', DAC1='0', DAC2='27'))
-        self.newroot.append(ET.Element('PLL0_settings', kp='10', fi='45e3', fii='3.4e3', fd='1', fdf='1', chkKd='False', chkKp='False', chkLock='False', chkKpCrossing='False'))
-        self.newroot.append(ET.Element('PLL1_settings', kp='-5.6', fi='141e3', fii='3.24e3', fd='1', fdf='1', chkKd='False', chkKp='True', chkLock='False', chkKpCrossing='True'))
-        self.newroot.append(ET.Element('PLL2_settings', kp='-120', fi='1e-2', fii='0', fd='1', fdf='1', chkKd='False', chkKp='False', chkLock='False', chkKpCrossing='False'))
-
-        self.newroot.append(ET.Element('PWM0_settings', standard='3.3', levels='256', default='0.0', minval='0.0', maxval='3.3'))
-
-        self.newroot.append(ET.Element('Main_window_settings', refresh_delay='500', N_samples_adc='1.75e3', N_samples_ddc='1e6', Integration_limit='5e6'))
-        self.newroot.append(ET.Element('Triangular_averaging', DAC1='1', DAC0='1'))
-
-        self.newroot.append(ET.Element('Dither_frequency', DAC1='5.1e3', DAC0='1e3'))
-        self.newroot.append(ET.Element('Dither_integration_time', DAC1='0.1', DAC0='0.1'))
-        self.newroot.append(ET.Element('Dither_amplitude', DAC1='1e.3', DAC0='1e-3'))
-        self.newroot.append(ET.Element('Dither_mode', DAC1='2', DAC0='2'))
-
-        self.newroot.append(ET.Element('VCO_settings', VCO_offset='0.00', VCO_amplitude='0.5', VCO_connection='0'))
-        self.newroot.append(ET.Element('RP_settings', Fan_state='0', PLL1_connection='0'))
-        self.newroot.append(ET.Element('Filter_select', DAC1='0', DAC0='0'))
-        self.newroot.append(ET.Element('Angle_select', DAC1='0', DAC0='0'))
-        
-        self.newtree = ET.ElementTree(self.newroot)
-        
-        self.newtree.write(strFilename + ".xml")
+#        self.newroot = ET.Element('SuperLaserLandPLL_settings')
+#        
+#        # Send update values from controller
+#        
+#        # Organize values from controller
+#        
+#        # useful stuff
+#        
+#        self.newtree = ET.ElementTree(self.newroot)
+#        
+#        self.newtree.write(strFilename + ".xml")
         # create a new XML file with the results        
 #        mydata = ET.tostring(self.newtree)  
 #        myfile = open(strFilename, "w")  
@@ -173,10 +586,17 @@ class SLLSystemParameters():
 
 
     def loadFromFile(self, strFilename):
+        print('loading from %s' % strFilename)
+        if strFilename[-5:] == '.json':         # if settings file is .json format
+            print('trying to load .json file')
+            self.readfromjson = True
+            self.Readjson(strFilename)
+#            print("Reading from .json: %s" % self.readfromjson)
 #        parser = ET.XMLParser(encoding="utf-8")
 #        self.tree = ET.fromstring(strFilename, parser=parser)
-        self.tree = ET.parse(strFilename)
-        self.root = self.tree.getroot()
+        else:
+            self.tree = ET.parse(strFilename)
+            self.root = self.tree.getroot()
 
         # we used to do error checking at this level, but now it is implemented one layer higher in the hierarchy (currently in XEM_GUI3.py)
         # try:
@@ -191,7 +611,14 @@ class SLLSystemParameters():
         self.tree.write(strFilename)
         return
 
-    def getValue(self, strKey, strParameter):
+    def getValuejson(self, strKey, strParameter):
+        for p in self.data[strKey]:
+            return p[strParameter]
+
+    def getValue(self, strKey, strParameter):        
+        if self.readfromjson == True:                       # to handle .json files
+            return self.getValuejson(strKey,strParameter)
+        
         return self.tree.find(strKey).attrib[strParameter]
 
     def setValue(self, strKey, strParameter, strValue):

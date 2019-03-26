@@ -105,6 +105,9 @@ class FreqErrorWindowWithTempControlV2(QtGui.QWidget):
         # Start timer which grabs data
         self.startTimers()
 
+    def retrieveValues(self):
+        return self.qchk_triangular.isChecked()
+    
     def startTimers(self):
         print("%s start timers" % self.strTitle)
         self.timerID = self.startTimer(500)

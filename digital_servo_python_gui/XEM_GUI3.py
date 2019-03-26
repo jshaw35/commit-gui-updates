@@ -502,6 +502,34 @@ class controller(object):
         self.dither_widget0.getValues()
         self.dither_widget1.getValues()
 
+    def retrieveValues(self):
+        print('collect for .json button pushed')
+
+        strFilename = self.xem_gui_mainwindow.qedit_export_json.text()
+        print(strFilename)
+        
+        window1_outs = self.xem_gui_mainwindow.retrieveValues() # DAC offset, VCO gain, dac low limit, dac high limit, reference frequency, dac_limited, kp, fi, fii, fd, fdf, chkKp, chkKd, chkLock, chkKpCrossing
+        window2_outs = self.xem_gui_mainwindow2.retrieveValues()
+        freq_window1_outs = self.freq_error_window1.retrieveValues() # boolean for triangular averaging
+        freq_window2_outs = self.freq_error_window2.retrieveValues()
+        dither1_outs = self.dither_widget0.retrieveValues() # modulation_freq, amplitude, integration_time_in_seconds, mode
+        dither2_outs = self.dither_widget1.retrieveValues()
+        rp_settings_outs = self.RP_Settings.retrieveValues() # VCO_connection, fan_state, PLL1_connection, VCO_amplitude, VCO_offset
+        divider_settings_outs = self.divider_settings_window.retrieveValues() # filter_select_0, filter_select_1, angle_select_0, angle_select_1
+    
+#        print(window1_outs)
+        settings_to_save = {}
+        settings_to_save['window1_outs'] = window1_outs
+        settings_to_save['window2_outs'] = window2_outs
+        settings_to_save['freq_window1_outs'] = freq_window1_outs
+        settings_to_save['freq_window2_outs'] = freq_window2_outs
+        settings_to_save['dither1_outs'] = dither1_outs
+        settings_to_save['dither2_outs'] = dither2_outs
+        settings_to_save['rp_settings_outs'] = rp_settings_outs
+        settings_to_save['divider_settings_outs'] = divider_settings_outs
+        
+        self.sp.Writejson(strFilename, settings_to_save)
+    
     def stopCommunication(self):
         if self.sl.dev.valid_socket:
             self.sl.dev.CloseTCPConnection()

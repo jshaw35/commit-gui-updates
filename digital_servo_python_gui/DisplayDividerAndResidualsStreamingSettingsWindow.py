@@ -140,6 +140,19 @@ class DisplayDividerAndResidualsStreamingSettingsWindow(QtGui.QWidget):
         elif angle_select_0 == 4:
             self.qchk_inphase_lsb0.setChecked(True)
 
+    def retrieveValues(self):
+        outdict = {}
+        
+        (filter_select_1, filter_select_0) = self.sl.get_ddc_filter_select()
+        (angle_select_1, angle_select_0) = self.sl.get_ddc_angle_select()
+
+        outdict['filter_select_0'] = filter_select_0
+        outdict['filter_select_1'] = filter_select_1
+        outdict['angle_select_0'] = angle_select_0
+        outdict['angle_select_1'] = angle_select_1
+        return outdict
+        
+
     def updateClicked(self):
         # Read user-entered settings:
         (clk_divider_modulus, bDividerOn, bPulses) = self.readSettings()

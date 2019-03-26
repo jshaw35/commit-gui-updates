@@ -157,6 +157,68 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
         self.displayDAC()   # This populates the current DAC values with the actual value
         self.refreshChk_event()
 
+    def retrieveValues(self):
+        outdict = {}
+        dac_offset = round(float(self.q_dac_offset[self.selected_ADC].value() / (2.**15.-1)), 4)
+        vco_gain = self.qedit_vco_gain[self.selected_ADC].text()
+        limit_low = round(float(self.sl.DACs_limit_low[self.selected_ADC] / (2.**15.-1)), 4)      
+        limit_high = round(float(self.sl.DACs_limit_high[self.selected_ADC] / (2.**15.-1)), 4)
+        ref_freq = self.qedit_ref_freq.text()
+        dac_limited = int(self.qchk_dac_limited[self.selected_ADC].isChecked())
+
+        kp = self.qloop_filters[self.selected_ADC].qedit_kp.text()
+        fi = self.qloop_filters[self.selected_ADC].qedit_fi.text()
+        fii = self.qloop_filters[self.selected_ADC].qedit_fii.text()
+        fd = self.qloop_filters[self.selected_ADC].qedit_fd.text()
+        fdf = self.qloop_filters[self.selected_ADC].qedit_fdf.text()
+        chkKp = str(self.qloop_filters[self.selected_ADC].qchk_kp.isChecked())
+        chkKd = str(self.qloop_filters[self.selected_ADC].qchk_kd.isChecked())
+        chkLock = str(self.qloop_filters[self.selected_ADC].qchk_lock.isChecked())
+        chkKpCrossing = str(self.qloop_filters[self.selected_ADC].qchk_bKpCrossing.isChecked())
+
+#        kp = []
+#        fi = []
+#        fii = []
+#        fd = []
+#        fdf = []
+#        chkKp = []
+#        chkKd = []
+#        chkLock = []
+#        chkKpCrossing = []
+#        
+#        kp[i] = self.qloop_filters[i].qedit_kp.text()
+#        fi[i] = self.qloop_filters[i].qedit_fi.text()
+#        fii[i] = self.qloop_filters[i].qedit_fii.text()
+#        fd[i] = self.qloop_filters[i].qedit_fd.text()
+#        fdf[i] = self.qloop_filters[i].qedit_fdf.text()
+#        chkKp[i] = int(self.qchk_kp.isChecked())
+#        chkKd[i] = int(self.qchk_kd.isChecked())
+#        chkLock[i] = int(self.qchk_lock.isChecked())
+#        chkKpCrossing[i] = int(self.qchk_bKpCrossing.isChecked())
+        
+        outdict['dac_offset'] = dac_offset
+        outdict['vco_gain'] = vco_gain
+        outdict['limit_low'] = limit_low
+        outdict['limit_high'] = limit_high
+        outdict['ref_freq'] = ref_freq
+        outdict['dac_limited'] = dac_limited
+        outdict['kp'] = kp
+        outdict['fi'] = fi
+        outdict['fii'] = fii
+        outdict['fd'] = fd
+        outdict['fdf'] = fdf
+        outdict['chkKp'] = chkKp
+        outdict['chkKd'] = chkKd
+        outdict['chkLock'] = chkLock
+        outdict['chkKpCrossing'] = chkKpCrossing
+#        print('DAC offsets: ', dac_offset)
+#        print('vco_gain: ', vco_gain)
+#        print('limit_lows: ', limit_low)
+#        print('limit_highs: ', limit_high)
+#        print('reference freq: ', ref_freq)
+#        print('DAC limited? ', dac_limited)
+        return outdict
+
     def pushActualValues(self):
         print("Push actual values of MainWindow")
 
@@ -756,7 +818,6 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
 
             self.qchk_lock.setStyleSheet('font-size: 18pt; color: white; background-color: red')
 
-
     def initUI(self):
 #        second_half_offset = 50
         # Change the background color of the main form so that each controls group stand out better
@@ -879,6 +940,14 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
         self.qedit_timerdelay.returnPressed.connect(self.refreshChk_event)
         self.qedit_timerdelay.setMaximumWidth(60)
 
+        # write new settings file button
+        if self.selected_ADC == 0: # only have button for first window
+            self.qbutton_export_json = QtGui.QPushButton('Save PID')
+            self.qbutton_export_json.clicked.connect(self.sl.controller.retrieveValues)
+            self.qbutton_export_json.setMaximumWidth(60)
+            
+            self.qedit_export_json = user_friendly_QLineEdit('locking_settings.json')
+        
 
         # Status reporting:
         if self.selected_ADC == 0:
@@ -962,6 +1031,9 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
         grid.addLayout(grid2, 0, 5, 2, 2)
         grid.addWidget(self.qsign_positive,             0, 7)
         grid.addWidget(self.qsign_negative,             1, 7)
+        if self.selected_ADC == 0:
+            grid.addWidget(self.qbutton_export_json,        0, 8)
+            grid.addWidget(self.qedit_export_json,          1, 8)
 
 
 

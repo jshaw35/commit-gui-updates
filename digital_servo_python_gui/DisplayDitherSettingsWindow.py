@@ -99,6 +99,30 @@ class DisplayDitherSettingsWindow(QtGui.QWidget):
                 self.qchk_mode_manual_off.setChecked(True)
 
 
+    def retrieveValues(self):
+        outdict = {}
+        (modulation_period, N_periods, output_amplitude, bEnableDither, mode_auto) = self.sl.get_Dither_Settings(self.output_number)
+        
+        modulation_frequency_in_hz = round(self.sl.dev.ADC_CLK_Hz/modulation_period)
+
+        amplitude = output_amplitude*2/(self.sl.DACs_limit_high[self.output_number]-self.sl.DACs_limit_low[self.output_number])
+
+        integration_time_in_samples = N_periods*modulation_period
+        integration_time_in_seconds = integration_time_in_samples/self.sl.dev.ADC_CLK_Hz
+        
+        if self.qchk_mode_auto.isChecked():
+            mode = 0
+        elif self.qchk_mode_manual_off.isChecked():
+            mode = 1
+        else: mode = 2
+        
+        outdict['modulation_freq'] = round(modulation_frequency_in_hz,4)
+        outdict['amplitude'] = round(amplitude,4)
+        outdict['integration_time_in_seconds'] = round(integration_time_in_seconds,4)
+        outdict['mode'] = mode
+        
+        return outdict
+
     def readDitherSettings(self):
 
         # Amplitude

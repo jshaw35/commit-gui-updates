@@ -117,6 +117,34 @@ class ConfigRPSettingsUI(Qt.QWidget):
         elif mux_pll1 == 2:
             self.qradio_pll0_to_pll1.setChecked(True)
 
+    def retrieveValues(self):
+        outdict = {}
+        mux_vco = self.sl.get_mux_vco()
+        if mux_vco == 1:
+            VCO_connection = 'A'
+        elif mux_vco == 2:
+            VCO_connection = 'B'
+        else: VCO_connection = 0
+        
+        if self.qradio_fan_on.isChecked() == False:
+            fan_state = 0
+        else: fan_state = 1
+        
+        if self.qradio_ddc1_to_pll1.isChecked() == True:
+            PLL1_connection = 0
+        elif self.qradio_ddc0_to_pll1.isChecked() == False:
+            PLL1_connection = 1
+        else: PLL1_connection = 2
+        
+        VCO_amplitude = self.qedit_int_vco_amplitude.text()
+        VCO_offset = self.qedit_int_vco_offset.text()
+        
+        outdict['VCO_connection'] = VCO_connection
+        outdict['Fan_state'] = fan_state
+        outdict['PLL1_connection'] = PLL1_connection
+        outdict['VCO_amplitude'] = VCO_amplitude
+        outdict['VCO_offset'] = VCO_offset
+        return outdict
 
 
     def initUI(self):

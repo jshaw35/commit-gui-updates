@@ -9,6 +9,6 @@
     <Device_8 strSerial = "002632f04895" color = "#B6E3E0" name = "RP - 8bits" shorthand = "RPD 8bits" config_file = "system_parameters_RP_8bits.xml"       />
     <Device_9 strSerial = "002632f05cec" color = "#1CC981" name = "RP - f_rep lock" shorthand = "frep" config_file = "system_parameters_RP_frep.xml"       />
     <Device_10 strSerial = "002632f05cef" color = "#B6E3E0" name = "RP - f_0 lock" shorthand = "f0" config_file = "system_parameters_RP_f0.xml"       />
-    <Device_11 strSerial = "002632f0516f" color = "#B6E3E0" name = "happy lock" shorthand = "f0" config_file = "system_parameters_RP_f0.xml"       />
+    <Device_11 strSerial = "002632f0516f" color = "#B6E3E0" name = "happy lock" shorthand = "f0" config_file = "test_32619.json"       />
 	<!-- For color, see http://www.color-hex.com/ or any other hex color resource-->
 </devices_data>
