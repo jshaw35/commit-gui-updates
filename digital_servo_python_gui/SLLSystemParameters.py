@@ -61,7 +61,7 @@ class SLLSystemParameters():
         self.root.append(ET.Element('Filter_select', DAC1='0', DAC0='0'))
         self.root.append(ET.Element('Angle_select', DAC1='0', DAC0='0'))
 
-    def Readjson(self,jsonfile):
+    def Readjson(self,jsonfile):            # Reads .json file into self.data dictionary
         print('reading %s' % jsonfile)
         
         

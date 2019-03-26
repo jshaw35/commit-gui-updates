@@ -942,11 +942,18 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
 
         # write new settings file button
         if self.selected_ADC == 0: # only have button for first window
-            self.qbutton_export_json = QtGui.QPushButton('Save PID')
+            self.qbutton_export_json = QtGui.QPushButton('Save PID to: ')
             self.qbutton_export_json.clicked.connect(self.sl.controller.retrieveValues)
-            self.qbutton_export_json.setMaximumWidth(60)
+            self.qbutton_export_json.setMaximumWidth(80)
             
             self.qedit_export_json = user_friendly_QLineEdit('locking_settings.json')
+           
+            self.qedit_import_settings = user_friendly_QLineEdit('locking_settings.json')
+            self.qedit_import_settings.setMaximumWidth(120)
+            
+            self.qbutton_import_settings = QtGui.QPushButton('Update Settings from: ')
+            self.qbutton_import_settings.clicked.connect(self.sl.controller.setValues)
+            self.qbutton_import_settings.setMaximumWidth(120)
         
 
         # Status reporting:
@@ -1005,7 +1012,7 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
         # We put a sub-grid in the grid
         # we put the VCO controls in the sub-grid, this way the outer grid stays the same size regardless of the number of elements
         grid2 = Qt.QGridLayout()
-        grid2.setHorizontalSpacing(10)
+        grid2.setHorizontalSpacing(15)
         grid2.setVerticalSpacing(10)
 
         if self.selected_ADC == 0:
@@ -1032,9 +1039,10 @@ class XEM_GUI_MainWindow(QtGui.QWidget):
         grid.addWidget(self.qsign_positive,             0, 7)
         grid.addWidget(self.qsign_negative,             1, 7)
         if self.selected_ADC == 0:
-            grid.addWidget(self.qbutton_export_json,        0, 8)
-            grid.addWidget(self.qedit_export_json,          1, 8)
-
+            grid.addWidget(self.qbutton_export_json,        2, 3)
+            grid.addWidget(self.qedit_export_json,          2, 4)
+            grid.addWidget(self.qbutton_import_settings,        2, 5)
+            grid.addWidget(self.qedit_import_settings,          2, 6)
 
 
 #         # Status reporting:

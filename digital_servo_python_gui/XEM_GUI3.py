@@ -530,6 +530,22 @@ class controller(object):
         
         self.sp.Writejson(strFilename, settings_to_save)
     
+    def setValues(self):
+        strFilename = self.xem_gui_mainwindow.qedit_import_settings.text()
+        print(strFilename)
+        self.sl.reset_front_end()
+        self.sp.loadFromFile(strFilename) # Write values into system parameters
+        
+        # Load values to respective windows and programs:
+        self.xem_gui_mainwindow2.pushDefaultValues()
+        self.xem_gui_mainwindow.pushDefaultValues()
+        self.freq_error_window1.pushDefaultValues()
+        self.freq_error_window2.pushDefaultValues()
+        self.RP_Settings.pushDefaultValues()
+        self.divider_settings_window.pushDefaultValues()
+        self.dither_widget0.pushDefaultValues()
+        self.dither_widget1.pushDefaultValues()
+    
     def stopCommunication(self):
         if self.sl.dev.valid_socket:
             self.sl.dev.CloseTCPConnection()
